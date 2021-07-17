@@ -38,8 +38,8 @@ async function refreshAuthToken(config) {
     await AuthService.loginWithPopup()
   } else if (needsRefresh) {
     await AuthService.getTokenSilently()
+    api.defaults.headers.authorization = AuthService.bearer
+    socketService.authenticate(AuthService.bearer)
   }
-  api.defaults.headers.authorization = AuthService.bearer
-  socketService.authenticate(AuthService.bearer)
   return config
 }
