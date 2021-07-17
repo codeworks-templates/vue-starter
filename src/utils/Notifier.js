@@ -1,6 +1,6 @@
 import Swal from 'sweetalert2'
 
-export default class Notification {
+export default class Pop {
   /**
  *
  * @param {string} title The title text.
@@ -10,7 +10,7 @@ export default class Notification {
  * -----------------------------------
  * {@link https://sweetalert2.github.io/#configuration|Check out Sweet Alerts}
  */
-  static async confirmAction(title = 'Are you sure?', text = "You won't be able to revert this!", icon = 'warning', confirmButtonText = 'Yes, delete it!') {
+  static async confirm(title = 'Are you sure?', text = "You won't be able to revert this!", icon = 'warning', confirmButtonText = 'Yes, delete it!') {
     try {
       const res = await Swal.fire({
         title: title,

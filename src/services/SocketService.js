@@ -1,6 +1,6 @@
 import { logger } from '../utils/Logger'
 import { SocketHandler } from '../utils/SocketHandler'
-import Notification from '../utils/Notification'
+import Pop from '../utils/Notifier'
 
 class SocketService extends SocketHandler {
   constructor() {
@@ -11,7 +11,7 @@ class SocketService extends SocketHandler {
 
   onError(e) {
     logger.error('[SOCKET_ERROR]', e)
-    Notification.toast(e.message, 'error')
+    Pop.toast(e.message, 'error')
   }
 }
 
