@@ -6,7 +6,7 @@
     "configurations": [
         {
             "command": "npm run serve",
-            "name": "Start Server",
+            "name": "Start Client",
             "request": "launch",
             "type": "node-terminal"
         }
