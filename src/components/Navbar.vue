@@ -1,5 +1,5 @@
 <template>
-  <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+  <nav class="navbar navbar-expand-lg navbar-dark bg-dark px-3">
     <router-link class="navbar-brand d-flex" :to="{ name: 'Home' }">
       <div class="d-flex flex-column align-items-center">
         <img
@@ -21,21 +21,16 @@
       <span class="navbar-toggler-icon" />
     </button>
     <div class="collapse navbar-collapse" id="navbarText">
-      <ul class="navbar-nav mr-auto">
-        <li class="nav-item">
-          <router-link :to="{ name: 'Home' }" class="nav-link">
-            Home
-          </router-link>
-        </li>
-        <li class="nav-item">
-          <router-link :to="{ name: 'About' }" class="nav-link">
+      <ul class="navbar-nav me-auto">
+        <li>
+          <router-link :to="{ name: 'About' }" class="btn text-success lighten-30 selectable text-uppercase">
             About
           </router-link>
         </li>
       </ul>
       <span class="navbar-text">
         <button
-          class="btn btn-outline-primary text-uppercase"
+          class="btn selectable text-success lighten-30 text-uppercase"
           @click="login"
           v-if="!user.isAuthenticated"
         >
@@ -120,7 +115,9 @@ a:hover {
 .nav-link{
   text-transform: uppercase;
 }
-.nav-item .nav-link.router-link-exact-active{
-  color: var(--primary);
+.navbar-nav .router-link-exact-active{
+  border-bottom: 2px solid var(--bs-success);
+  border-bottom-left-radius: 0;
+  border-bottom-right-radius: 0;
 }
 </style>

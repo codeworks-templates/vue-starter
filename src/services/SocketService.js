@@ -1,6 +1,6 @@
 import { logger } from '../utils/Logger'
+import Pop from '../utils/Pop'
 import { SocketHandler } from '../utils/SocketHandler'
-import Pop from '../utils/Notifier'
 
 class SocketService extends SocketHandler {
   constructor() {
