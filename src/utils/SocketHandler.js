@@ -2,9 +2,6 @@ import { logger } from './Logger.js'
 import { baseURL } from '../env.js'
 import io from 'socket.io-client'
 
-let connected = false
-let queue = []
-
 const SOCKET_EVENTS = {
   connection: 'connection',
   connected: 'connected',
@@ -20,10 +17,13 @@ export class SocketHandler {
   /**
    * @param {String} url
    */
-  constructor(url = baseURL) {
+  constructor(requiresAuth = false, url = baseURL) {
     // @ts-ignore
     // eslint-disable-next-line no-undef
     this.socket = io(url || baseURL)
+    this.requiresAuth = requiresAuth
+    this.queue = []
+    this.authenticated = false
     this
       .on(SOCKET_EVENTS.connected, this.onConnected)
       .on(SOCKET_EVENTS.authenticated, this.onAuthenticated)
@@ -37,16 +37,14 @@ export class SocketHandler {
 
   onConnected(connection) {
     logger.log('[SOCKET_CONNECTION]', connection)
-    connected = true
+    this.connected = true
+    this.playback()
   }
 
   onAuthenticated(auth) {
     logger.log('[SOCKET_AUTHENTICATED]', auth)
-    const playback = [...queue]
-    queue = []
-    playback.forEach(e => {
-      this.emit(e.action, e.payload)
-    })
+    this.authenticated = true
+    this.playback()
   }
 
   authenticate(bearerToken) {
@@ -57,10 +55,26 @@ export class SocketHandler {
     logger.error('[SOCKET_ERROR]', error)
   }
 
+  enqueue(action, payload) {
+    logger.log('[ENQUEING_ACTION]', { action, payload })
+    this.queue.push({ action, payload })
+  }
+
+  playback() {
+    logger.log('[SOCKET_PLAYBACK]')
+    const playback = [...this.queue]
+    this.queue = []
+    playback.forEach(e => {
+      this.emit(e.action, e.payload)
+    })
+  }
+
   emit(action, payload = undefined) {
-    if (!connected) {
-      logger.log('[ENQUEING_ACTION]', { action, payload })
-      return queue.push({ action, payload })
+    if (this.requiresAuth && !this.authenticated) {
+      return this.enqueue(action, payload)
+    }
+    if (!this.connected) {
+      return this.enqueue(action, payload)
     }
     this.socket.emit(action, payload)
   }
