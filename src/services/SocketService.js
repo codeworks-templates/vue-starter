@@ -1,4 +1,3 @@
-import { logger } from '../utils/Logger'
 import Pop from '../utils/Pop'
 import { SocketHandler } from '../utils/SocketHandler'
 
@@ -10,7 +9,6 @@ class SocketService extends SocketHandler {
   }
 
   onError(e) {
-    logger.error('[SOCKET_ERROR]', e)
     Pop.toast(e.message, 'error')
   }
 }
