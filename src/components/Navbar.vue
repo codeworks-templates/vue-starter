@@ -12,8 +12,8 @@
     <button
       class="navbar-toggler"
       type="button"
-      data-toggle="collapse"
-      data-target="#navbarText"
+      data-bs-toggle="collapse"
+      data-bs-target="#navbarText"
       aria-controls="navbarText"
       aria-expanded="false"
       aria-label="Toggle navigation"
@@ -30,17 +30,19 @@
       </ul>
       <span class="navbar-text">
         <button
-          class="btn selectable text-success lighten-30 text-uppercase"
+          class="btn selectable text-success lighten-30 text-uppercase my-2 my-lg-0"
           @click="login"
           v-if="!user.isAuthenticated"
         >
           Login
         </button>
 
-        <div class="dropdown" v-else>
+        <div class="dropdown my-2 my-lg-0" v-else>
           <div
-            class="dropdown-toggle"
-            @click="state.dropOpen = !state.dropOpen"
+            class="dropdown-toggle selectable"
+            data-bs-toggle="dropdown"
+            aria-expanded="false"
+            id="authDropdown"
           >
             <img
               :src="user.picture"
@@ -48,22 +50,22 @@
               height="40"
               class="rounded"
             />
-            <span class="mx-3">{{ user.name }}</span>
+            <span class="mx-3 text-success lighten-30">{{ user.name }}</span>
           </div>
           <div
             class="dropdown-menu p-0 list-group w-100"
-            :class="{ show: state.dropOpen }"
-            @click="state.dropOpen = false"
+            aria-labelledby="authDropdown"
           >
             <router-link :to="{ name: 'Account' }">
               <div class="list-group-item list-group-item-action hoverable">
-                Account
+                Manage Account
               </div>
             </router-link>
             <div
-              class="list-group-item list-group-item-action hoverable"
+              class="list-group-item list-group-item-action hoverable text-danger"
               @click="logout"
             >
+              <i class="mdi mdi-logout"></i>
               logout
             </div>
           </div>
@@ -76,14 +78,10 @@
 <script>
 import { AuthService } from '../services/AuthService'
 import { AppState } from '../AppState'
-import { computed, reactive } from 'vue'
+import { computed } from 'vue'
 export default {
   setup() {
-    const state = reactive({
-      dropOpen: false
-    })
     return {
-      state,
       user: computed(() => AppState.user),
       async login() {
         AuthService.loginWithPopup()

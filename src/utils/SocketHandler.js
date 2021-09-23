@@ -1,6 +1,6 @@
+import { io } from 'socket.io-client'
+import { baseURL, useSockets } from '../env.js'
 import { logger } from './Logger.js'
-import { baseURL } from '../env.js'
-import io from 'socket.io-client'
 
 let connected = false
 let queue = []
@@ -21,8 +21,7 @@ export class SocketHandler {
    * @param {String} url
    */
   constructor(url = baseURL) {
-    // @ts-ignore
-    // eslint-disable-next-line no-undef
+    if (!useSockets) { return }
     this.socket = io(url || baseURL)
     this
       .on(SOCKET_EVENTS.connected, this.onConnected)
@@ -31,7 +30,7 @@ export class SocketHandler {
   }
 
   on(event, fn) {
-    this.socket.on(event, fn.bind(this))
+    this.socket?.on(event, fn.bind(this))
     return this
   }
 
@@ -50,7 +49,7 @@ export class SocketHandler {
   }
 
   authenticate(bearerToken) {
-    this.socket.emit(SOCKET_EVENTS.authenticate, bearerToken)
+    this.socket?.emit(SOCKET_EVENTS.authenticate, bearerToken)
   }
 
   onError(error) {
