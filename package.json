@@ -7,7 +7,7 @@
     "build": "vite build"
   },
   "dependencies": {
-    "@bcwdev/auth0provider-client": "^0.0.8",
+    "@bcwdev/auth0provider-client": "^0.0.9",
     "@mdi/font": "^6.3.95",
     "@popperjs/core": "^2.10.2",
     "axios": "^0.23.0",
