@@ -52,4 +52,23 @@ export default class Pop {
       showConfirmButton: false
     })
   }
+  
+  /**
+   * @param {import('axios').AxiosError | Error | String } Error An Error Object.
+   */
+  static error(error) {
+    if (error.isAxiosError) {
+      const { response } = error
+      this.toast(response.data.error?.message || response.data.message, 'error')
+    } else {
+      this.toast(error.message || error, 'error')
+    }
+  }
+
+  /**
+   * @param { String } message The message to display. If not provided, will display a generic message.
+   */
+  static success(message = 'Success!') {
+    this.toast(message, 'success')
+  }
 }
