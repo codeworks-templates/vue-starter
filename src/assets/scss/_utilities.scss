@@ -3,7 +3,7 @@
   $g: green($background);
   $b: blue($background);
 
-  $yiq: (($r * 299) + ($g * 587) + ($b * 114))/1000;
+  $yiq: calc((($r * 299) + ($g * 587) + ($b * 114))/1000);
 
   @if ($yiq >= 128) {
     @return #111;
@@ -41,13 +41,13 @@
         background-color: $darker !important;
       }
       &.fade-#{$num} {
-        background-color: fade($value, $num / 100) !important;
+        background-color: fade($value, calc($num / 100)) !important;
       }
       &.fade-lighten-#{$num} {
-        background-color: fade($lighter, $num / 100) !important;
+        background-color: fade($lighter, calc($num / 100)) !important;
       }
       &.fade-darken-#{$num} {
-        background-color: fade($darker, $num / 100) !important;
+        background-color: fade($darker, calc($num / 100)) !important;
       }
     }
     .text-#{$color}.darken-#{$num} {
