@@ -4,6 +4,10 @@
 @import "./utilities.scss";
 @import "./loaders.scss";
 
+body{
+  overscroll-behavior: none;
+}
+
 #app {
   display: flex;
   flex-direction: column;
