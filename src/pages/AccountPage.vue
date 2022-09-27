@@ -10,7 +10,6 @@
 import { computed } from 'vue'
 import { AppState } from '../AppState'
 export default {
-  name: 'Account',
   setup() {
     return {
       account: computed(() => AppState.account)

@@ -1,5 +1,6 @@
 import Swal from 'sweetalert2'
 import 'sweetalert2/dist/sweetalert2.min.css'
+import { logger } from './Logger.js'
 
 export default class Pop {
   /**
@@ -8,7 +9,7 @@ export default class Pop {
  * @param {string} text The body text.
  * @param {string} confirmButtonText The text of your confirm button.
  * @param {'success' | 'error' | 'info' | 'warning' | 'question'} icon Pop icon
- * 
+ *
  * {@link https://sweetalert2.github.io/#configuration|Check out Sweet Alerts}
  */
   static async confirm(title = 'Are you sure?', text = "You won't be able to revert this!", confirmButtonText = 'Yes', icon = 'warning') {
@@ -56,9 +57,12 @@ export default class Pop {
 
   /**
    * @param {import('axios').AxiosError | Error | String } Error An Error Object.
+   * @param { String } eventTrigger Queryable trigger
    */
-  static error(error) {
-   if (error.isAxiosError) {
+  static error(error, eventTrigger = '') {
+    logger.error(eventTrigger, error)
+
+    if (error.isAxiosError) {
       const { response } = error
       const errorObj = (response.data ? response.data.error : response.data) || { message: 'Invalid Request ' + response.status }
       if (!errorObj) {
