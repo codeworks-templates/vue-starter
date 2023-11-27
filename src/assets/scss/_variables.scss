@@ -1,42 +1,124 @@
-$themes: (
-  default: (
-    "body-bg": #e5e5e5,
-    "primary": #3ba5dc,
-    "secondary": #8392ab,
-    "success": #00f867,
-    "info": #5d0149,
-    "warning": #fbcf33,
-    "danger": #ea0606,
-    "light": #e9ecef,
-    "dark": #111927,
-    "grey": #cbcbcb,
-  ),
-  dark: (
-    "body-bg": #090f18,
-    "primary": #89e5b0,
-    "secondary": #fff9a4,
-    "success": #00f867,
-    "info": #330163,
-    "warning": #fbcf33,
-    "danger": #eb5757,
-    "light": #ebeef1,
-    "dark": #090f18,
-    "grey": #cbcbcb,
-  ),
+@import "../../../node_modules/bootstrap/scss/functions";
+@import "../../../node_modules/bootstrap/scss/variables";
+@import "../../../node_modules/bootstrap/scss/variables-dark";
+@import "../../../node_modules/bootstrap/scss/maps";
+@import "../../../node_modules/bootstrap/scss/mixins";
+@import "../../../node_modules/bootstrap/scss/utilities";
+
+$light-theme: (
+  "primary": #066ac9,
+  "secondary": #071e3b,
+  "success": #0cbc87,
+  "info": #17a2b8,
+  "warning": #f7c32e,
+  "danger": #d6293e,
+  "text": #f8f9fd,
+  "page": #f4f4f4
 );
 
-$color-ranges: (
-  0: 0,
-  5: 5,
-  10: 10,
-  15: 15,
-  20: 20,
-  25: 25,
-  30: 30,
-  35: 35,
-  40: 40,
+$dark-theme: (
+  "primary": #ff22ff,
+  "secondary": #2fff9a,
+  "success": #aa49f9,
+  "info": #01efb6,
+  "warning": #ffda6a,
+  "danger": #ea868f,
+  "text": #b1aafa,
+  "page": #0a081b,
+  "dark": #030110,
+  "body-bg": #020314
 );
 
-$font-sans-serif: Open Sans;
-$font-monospace: SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
-$gradient: linear-gradient(180deg, hsla(0, 0%, 100%, 0.15), hsla(0, 0%, 100%, 0));
+$default-colors: (
+  "primary": $primary,
+  "secondary": $secondary,
+  "success": $success,
+  "info": $info,
+  "warning": $warning,
+  "danger": $danger,
+  "white": $white,
+  "light": $light,
+  "dark": $dark
+);
+
+@import "bootstrap";
+
+@mixin generate-theme-properties($theme, $overrides-colors) {
+  $theme-colors: map-merge($default-colors, $overrides-colors);
+
+  @each $color, $value in $theme-colors {
+    $color-variation: 35%;
+    $shade-amount: 60%;
+
+    --#{$variable-prefix}#{$color}: #{$value};
+    --#{$variable-prefix}#{$color}-text-emphasis: #{if(
+        $theme == "light",
+        shade-color($value, $shade-amount),
+        tint-color($value, $shade-amount)
+      )};
+    --#{$variable-prefix}#{$color}-bg-subtle: #{if(
+        $theme == "light",
+        lighten($value, $color-variation),
+        darken($value, $color-variation)
+      )};
+    --#{$variable-prefix}#{$color}-border-subtle: #{if(
+        $theme == "light",
+        lighten($value, calc($color-variation / 2)),
+        darken($value, calc($color-variation / 2))
+      )};
+    .bg-#{$color} {
+      background-color: #{$value};
+    }
+    .text-#{$color} {
+      color: #{$value};
+    }
+  }
+
+  // Redefine theme color rgb vars (used for bg- colors)
+  $theme-colors-rgb: map-loop($theme-colors, to-rgb, "$value");
+  @each $color, $value in $theme-colors-rgb {
+    --#{$variable-prefix}#{$color}-rgb: #{$value};
+  }
+
+  @each $color, $value in $theme-colors {
+    .btn-#{$color} {
+      @if $color == "light" {
+        @include button-variant(
+          $value,
+          $value,
+          $hover-background: shade-color($value, $btn-hover-bg-shade-amount),
+          $hover-border: shade-color($value, $btn-hover-border-shade-amount),
+          $active-background: shade-color($value, $btn-active-bg-shade-amount),
+          $active-border: shade-color($value, $btn-active-border-shade-amount)
+        );
+      } @else if $color == "dark" {
+        @include button-variant(
+          $value,
+          $value,
+          $hover-background: tint-color($value, $btn-hover-bg-tint-amount),
+          $hover-border: tint-color($value, $btn-hover-border-tint-amount),
+          $active-background: tint-color($value, $btn-active-bg-tint-amount),
+          $active-border: tint-color($value, $btn-active-border-tint-amount)
+        );
+      } @else {
+        @include button-variant($value, $value);
+      }
+    }
+  }
+
+  @each $color, $value in $theme-colors {
+    .btn-outline-#{$color} {
+      @include button-outline-variant($value);
+    }
+  }
+}
+
+[data-bs-theme="light"] {
+  @include generate-theme-properties("light", $light-theme);
+}
+
+[data-bs-theme="dark"] {
+  @include generate-theme-properties("dark", $dark-theme);
+}
+
+@debug "[sass_success] Themes_Built";

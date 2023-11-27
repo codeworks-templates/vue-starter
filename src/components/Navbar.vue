@@ -1,5 +1,5 @@
 <template>
-  <nav class="navbar navbar-expand-lg navbar-dark bg-dark px-3">
+  <nav class="navbar navbar-expand-sm navbar-dark bg-dark px-3">
     <router-link class="navbar-brand d-flex" :to="{ name: 'Home' }">
       <div class="d-flex flex-column align-items-center">
         <img alt="logo" src="../assets/img/cw-logo.png" height="45" />
@@ -18,16 +18,35 @@
         </li>
       </ul>
       <!-- LOGIN COMPONENT HERE -->
+      <div>
+        <button class="btn text-light" @click="toggleTheme"><i class="mdi" :class="theme == 'light' ? 'mdi-weather-sunny' : 'mdi-weather-night'"></i></button>
+      </div>
       <Login />
     </div>
   </nav>
 </template>
 
 <script>
+import { onMounted, ref } from 'vue';
+import { loadState, saveState } from '../utils/Store.js';
 import Login from './Login.vue';
 export default {
   setup() {
-    return {}
+
+    const theme = ref(loadState('theme') || 'light')
+
+    onMounted(() => {
+      document.documentElement.setAttribute('data-bs-theme', theme.value)
+    })
+
+    return {
+      theme,
+      toggleTheme() {
+        theme.value = theme.value == 'light' ? 'dark' : 'light'
+        document.documentElement.setAttribute('data-bs-theme', theme.value)
+        saveState('theme', theme.value)
+      }
+    }
   },
   components: { Login }
 }
