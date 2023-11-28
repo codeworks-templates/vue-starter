@@ -38,7 +38,8 @@ $default-colors: (
   "danger": $danger,
   "white": $white,
   "light": $light,
-  "dark": $dark
+  "dark": $dark,
+  "custom": #3ba5dc
 );
 
 @import "bootstrap";
@@ -66,39 +67,57 @@ $default-colors: (
         lighten($value, calc($color-variation / 2)),
         darken($value, calc($color-variation / 2))
       )};
+      .text-#{$color} {
+        --bs-color: #{$value};
+      }
+      .border-#{$color}{
+        --bs-border-color: #{$value};
+      }
+      .outline{
+        outline-style: var(--bs-outline-style, solid);
+        outline-width: var(--bs-outline-width, 1px);
+        outline-color: var(--bs-outline-color, var(--bs-primary));
+      }
+      .outline-#{$color}{
+        --bs-outline-color: #{$value};
+      }
+    }
+    
+    // Redefine theme color rgb vars (used for bg- colors)
+    $theme-colors-rgb: map-loop($theme-colors, to-rgb, "$value");
+    @each $color, $value in $theme-colors-rgb {
+      --#{$variable-prefix}#{$color}-rgb: #{$value};
     .bg-#{$color} {
-      background-color: #{$value};
+      background-color: rgba($value, var(--bs-bg-opacity));
     }
-    .text-#{$color} {
-      color: #{$value};
+    .focus-ring-#{$color}{
+      --bs-focus-ring-color: rgba(#{$value} , .25);
     }
-  }
-
-  // Redefine theme color rgb vars (used for bg- colors)
-  $theme-colors-rgb: map-loop($theme-colors, to-rgb, "$value");
-  @each $color, $value in $theme-colors-rgb {
-    --#{$variable-prefix}#{$color}-rgb: #{$value};
   }
 
   @each $color, $value in $theme-colors {
     .btn-#{$color} {
-      @if $color == "light" {
+      @if $theme == "light" {
         @include button-variant(
           $value,
           $value,
           $hover-background: shade-color($value, $btn-hover-bg-shade-amount),
           $hover-border: shade-color($value, $btn-hover-border-shade-amount),
           $active-background: shade-color($value, $btn-active-bg-shade-amount),
-          $active-border: shade-color($value, $btn-active-border-shade-amount)
+          $active-border: shade-color($value, $btn-active-border-shade-amount),
+          $disabled-background: transparentize($value, .25),
+          $disabled-border: transparentize($value, .25),
         );
-      } @else if $color == "dark" {
+      } @else if $theme == "dark" {
         @include button-variant(
           $value,
           $value,
           $hover-background: tint-color($value, $btn-hover-bg-tint-amount),
           $hover-border: tint-color($value, $btn-hover-border-tint-amount),
           $active-background: tint-color($value, $btn-active-bg-tint-amount),
-          $active-border: tint-color($value, $btn-active-border-tint-amount)
+          $active-border: tint-color($value, $btn-active-border-tint-amount),
+          $disabled-background: transparentize($value, .25),
+          $disabled-border: transparentize($value, .25),
         );
       } @else {
         @include button-variant($value, $value);
