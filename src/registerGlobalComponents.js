@@ -3,11 +3,11 @@ export function registerGlobalComponents(root) {
   // @ts-ignore
   const components = import.meta.glob('./components/**/*.vue')
   Object.entries(components).forEach(async ([fileName, importable]) => {
-    const componentName = (importable.name || fileName)
+    const component = await importable().default
+    const componentName = (component?.name || fileName)
       .substring(fileName.lastIndexOf('/') + 1)
       .replace(/\.\w+$/, '')
-    const component = await importable()
     // Register component on this Vue instance
-    root.component(componentName, component.default)
+    root.component(componentName, component)
   })
 }
