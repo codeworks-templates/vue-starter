@@ -3,7 +3,7 @@ export function registerGlobalComponents(root) {
   // @ts-ignore
   const components = import.meta.glob('./components/**/*.vue')
   Object.entries(components).forEach(async ([fileName, importable]) => {
-    const componentName = (component.name || fileName)
+    const componentName = (importable.name || fileName)
       .substring(fileName.lastIndexOf('/') + 1)
       .replace(/\.\w+$/, '')
     const component = await importable()
