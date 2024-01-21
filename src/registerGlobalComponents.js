@@ -7,8 +7,6 @@ export async function registerGlobalComponents(root) {
       const componentName = (component?.name || fileName)
         .substring(fileName.lastIndexOf('/') + 1)
         .replace(/\.\w+$/, '')
-
-      console.log({ component: component.default, name: componentName })
       root.component(componentName, component.default)
     }
     resolve()
