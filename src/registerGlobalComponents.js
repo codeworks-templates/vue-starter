@@ -1,13 +1,16 @@
-export function registerGlobalComponents(root) {
-  // https://webpack.js.org/guides/dependency-management/#require-context
-  // @ts-ignore
-  const components = import.meta.glob('./components/**/*.vue')
-  Object.entries(components).forEach(async ([fileName, importable]) => {
-    const component = await importable()
-    const componentName = (component?.name || fileName)
-      .substring(fileName.lastIndexOf('/') + 1)
-      .replace(/\.\w+$/, '')
-    // Register component on this Vue instance
-    root.component(componentName, component.default)
+export async function registerGlobalComponents(root) {
+  return new Promise(async (resolve, reject) => {
+    const components = import.meta.glob('./components/**/*.vue')
+    for (const fileName in components) {
+      console.log(fileName)
+      const component = await import(fileName)
+      const componentName = (component?.name || fileName)
+        .substring(fileName.lastIndexOf('/') + 1)
+        .replace(/\.\w+$/, '')
+
+      console.log({ component: component.default, name: componentName })
+      root.component(componentName, component.default)
+    }
+    resolve()
   })
 }
