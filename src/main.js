@@ -8,8 +8,11 @@ import { router } from './router'
 import './utils/SocketProvider.js'
 
 const root = createApp(App)
-registerGlobalComponents(root)
+async function init() {
+  await registerGlobalComponents(root)
+  root
+    .use(router)
+    .mount('#app')
+}
+init()
 
-root
-  .use(router)
-  .mount('#app')
