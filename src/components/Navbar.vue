@@ -19,7 +19,9 @@
       </ul>
       <!-- LOGIN COMPONENT HERE -->
       <div>
-        <button class="btn text-light" @click="toggleTheme"><i class="mdi" :class="theme == 'light' ? 'mdi-weather-sunny' : 'mdi-weather-night'"></i></button>
+        <button class="btn text-light" @click="toggleTheme">
+          <i class="mdi" :class="theme == 'light' ? 'mdi-weather-sunny' : 'mdi-weather-night'"></i>
+        </button>
       </div>
       <Login />
     </div>
@@ -67,7 +69,7 @@ a:hover {
   border-bottom-right-radius: 0;
 }
 
-@media screen and (min-width: 768px) {
+@media screen and (min-width: 576px) {
   nav {
     height: 64px;
   }
