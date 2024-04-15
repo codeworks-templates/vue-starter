@@ -1,3 +1,5 @@
+<script setup></script>
+
 <template>
   <div class="home flex-grow-1 d-flex flex-column align-items-center justify-content-center">
     <div class="home-card p-5 card align-items-center shadow rounded elevation-3">
@@ -9,16 +11,6 @@
     </div>
   </div>
 </template>
-
-<script>
-export default {
-  setup() {
-    return {
-      
-    }
-  }
-}
-</script>
 
 <style scoped lang="scss">
 .home {
