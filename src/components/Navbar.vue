@@ -6,7 +6,7 @@ import Login from './Login.vue';
 const theme = ref(loadState('theme') || 'light')
 
 onMounted(() => {
-document.documentElement.setAttribute('data-bs-theme', theme.value)
+  document.documentElement.setAttribute('data-bs-theme', theme.value)
 })
 
 function toggleTheme() {
@@ -38,7 +38,8 @@ function toggleTheme() {
       </ul>
       <!-- LOGIN COMPONENT HERE -->
       <div>
-        <button class="btn text-light" @click="toggleTheme">
+        <button class="btn text-light" @click="toggleTheme"
+          :title="`Enable ${theme == 'light' ? 'dark' : 'light'} theme.`">
           <i class="mdi" :class="theme == 'light' ? 'mdi-weather-sunny' : 'mdi-weather-night'"></i>
         </button>
       </div>
