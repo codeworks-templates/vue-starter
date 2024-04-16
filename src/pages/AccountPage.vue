@@ -19,7 +19,7 @@ const account = computed(() => AppState.account)
   </div>
 </template>
 
-<style scoped>
+<style scoped lang="scss">
 img {
   max-width: 100px;
 }
