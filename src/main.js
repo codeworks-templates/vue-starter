@@ -4,8 +4,9 @@ import { createApp } from 'vue'
 // @ts-ignore
 import App from './App.vue'
 import { registerGlobalComponents } from './registerGlobalComponents'
+import './registerGlobalSocketHandlers'
 import { router } from './router'
-import './utils/SocketProvider.js'
+
 
 const root = createApp(App)
 async function init() {

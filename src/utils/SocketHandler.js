@@ -14,6 +14,8 @@ const SOCKET_EVENTS = {
 }
 
 let socket = null
+let authenticated = false
+let queue = []
 
 function getSocketConnection(url) {
   if (!socket) {
@@ -25,7 +27,22 @@ function getSocketConnection(url) {
 
 function registerGlobalSocketMessages(socket) {
   socket.on(SOCKET_EVENTS.error, onSocketError)
+  socket.on(SOCKET_EVENTS.authenticated, runPlayback)
 }
+
+function runPlayback() {
+  console.groupCollapsed('⚡[SOCKET_AUTHENTICATED]')
+  authenticated = true
+  if (!queue.length) { return }
+  const playback = [...queue]
+  queue = []
+  playback.forEach(e => {
+    logger.log(`📡 ${e.handler}`, e.action, e.payload)
+    socket.emit(e.action, e.payload)
+  })
+  console.groupEnd()
+}
+
 function onSocketError(error) {
   logger.error('⚡[SOCKET_ERROR]', error)
 }
@@ -40,17 +57,13 @@ export class SocketHandler {
     getSocketConnection(url || baseURL)
     this.socket = socket
     this.requiresAuth = requiresAuth
-    this.queue = []
-    this.authenticated = false
-    this
-      .on(SOCKET_EVENTS.connected, this.onConnected)
-      .on(SOCKET_EVENTS.authenticated, this.onAuthenticated)
   }
 
   on(event, fn) {
     const ctx = this
     this.socket?.on(event, function() {
       try {
+        // @ts-ignore
         fn.call(ctx, ...arguments)
       } catch (error) {
         logger.warn('🩻[FATAL EVENT]', event)
@@ -60,46 +73,23 @@ export class SocketHandler {
     return this
   }
 
-  onConnected(connection) {
-    this.connected = true
-    this.playback()
-  }
-
-  onAuthenticated(auth) {
-    console.groupCollapsed('⚡[SOCKET_AUTHENTICATED]', this.constructor.name)
-    logger.log(auth)
-    this.authenticated = true
-    this.playback()
-    console.groupEnd()
-  }
-
   authenticate(bearerToken) {
     this.socket?.emit(SOCKET_EVENTS.authenticate, bearerToken)
   }
 
   enqueue(action, payload) {
-    logger.log('📼[ENQUEING_ACTION]', { action, payload })
-    this.queue.push({ action, payload })
+    const handler = this.constructor.name
+    const enqueued = { handler, action, payload }
+    logger.log('📼[ENQUEING_ACTION]', enqueued)
+    queue.push(enqueued)
   }
 
-  playback() {
-    if (!this.queue.length) { return }
-    logger.log(`📽️[${this.constructor.name}]`,)
-    const playback = [...this.queue]
-    this.queue = []
-    playback.forEach(e => {
-      this.emit(e.action, e.payload)
-    })
-  }
 
   emit(action, payload = undefined) {
-    if (this.requiresAuth && !this.authenticated) {
-      return this.enqueue(action, payload)
-    }
-    if (!this.connected) {
+    if (this.requiresAuth && !authenticated) {
       return this.enqueue(action, payload)
     }
     logger.log('📡', action, payload)
-    this.socket.emit(action, payload)
+    this.socket?.emit(action, payload)
   }
 }
