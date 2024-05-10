@@ -9,7 +9,7 @@
   },
   "type": "module",
   "dependencies": {
-    "@bcwdev/auth0provider-client": "0.1.8",
+    "@bcwdev/auth0provider-client": "0.1.10",
     "@mdi/font": "7.4.47",
     "@popperjs/core": "2.11.8",
     "axios": "1.6.8",
