@@ -40,7 +40,7 @@ function toggleTheme() {
       <div>
         <button class="btn text-light" @click="toggleTheme"
           :title="`Enable ${theme == 'light' ? 'dark' : 'light'} theme.`">
-          <i class="mdi" :class="theme == 'light' ? 'mdi-weather-sunny' : 'mdi-weather-night'"></i>
+          <Icon :name="theme == 'light' ? 'weather-sunny' : 'weather-night'" />
         </button>
       </div>
       <Login />

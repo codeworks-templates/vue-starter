@@ -31,5 +31,11 @@ export const logger = {
   },
   trace() {
     log('trace', arguments)
-  }
+  },
+  groupCollapsed() {
+    log('groupCollapsed', arguments)
+  },
+  groupEnd() {
+    log('groupEnd', arguments)
+  },
 }

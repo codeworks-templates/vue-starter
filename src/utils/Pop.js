@@ -1,6 +1,7 @@
 import Swal from 'sweetalert2'
 import 'sweetalert2/dist/sweetalert2.min.css'
 import { logger } from './Logger.js'
+import { AxiosError } from 'axios'
 
 export default class Pop {
   /**
@@ -29,6 +30,7 @@ export default class Pop {
       }
       return false
     } catch (error) {
+      logger.error('CONFIRMATION', error)
       return false
     }
   }
@@ -56,21 +58,23 @@ export default class Pop {
   }
 
   /**
-   * @param {import('axios').AxiosError | Error | String } Error An Error Object.
+   * @param {import('axios').AxiosError | Error | String } error An Error Object.
    * @param { String } eventTrigger Queryable trigger
    */
   static error(error, eventTrigger = '') {
     logger.error(eventTrigger, error)
 
-    if (error.isAxiosError) {
+    if (error instanceof AxiosError) {
       const { response } = error
-      const errorObj = (response.data ? response.data.error : response.data) || { message: 'Invalid Request ' + response.status }
-      if (!errorObj) {
-        return this.toast(error.message)
+      let message = 'An error occurred'
+      if (response) {
+        message = response.data.message || response.statusText
       }
-      this.toast(errorObj.message || errorObj.error || 'error')
+      this.toast(message, 'error')
+    } else if (error instanceof Error) {
+      this.toast(error.message, 'error')
     } else {
-      this.toast(error.message || error, 'error')
+      this.toast(error, 'error')
     }
   }
 

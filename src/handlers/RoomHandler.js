@@ -1,3 +1,4 @@
+import { logger } from "@/utils/Logger.js";
 import { SocketHandler } from "../utils/SocketHandler.js";
 
 class TestHandler extends SocketHandler {
@@ -13,16 +14,16 @@ class TestHandler extends SocketHandler {
   }
 
   onJoinedRoom(roomName) {
-    console.log('You joined room', roomName)
+    logger.log('You joined room', roomName)
   }
   onLeftRoom(roomName) {
-    console.log('You left room', roomName)
+    logger.log('You left room', roomName)
   }
   onUserJoinedRoom(user) {
-    console.log('A user joined your room', user)
+    logger.log('A user joined your room', user)
   }
   onUserLeftRoom(user) {
-    console.log('A user left your room', user)
+    logger.log('A user left your room', user)
   }
 
 }

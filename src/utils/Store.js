@@ -1,3 +1,4 @@
+import { logger } from "./Logger.js"
 import Pop from "./Pop.js"
 
 const APP_NAME = "{{name}}"
@@ -14,7 +15,7 @@ export function saveState(key, value) {
       window.localStorage.removeItem(keyName)
     }
   } catch (error) {
-    console.error('[SAVING_STATE]', { key, value })
+    logger.error('[SAVING_STATE]', { key, value })
     Pop.error(error)
   }
 }
@@ -22,7 +23,7 @@ export function saveState(key, value) {
 export function loadState(key, instanceType) {
   try {
     const keyName = `${APP_NAME}_${key}`
-    if(!instanceType){
+    if (!instanceType) {
       return window.localStorage.getItem(keyName)
     }
     const keyType = Array.isArray(instanceType) ? '[]' : '{}'
@@ -37,7 +38,7 @@ export function loadState(key, instanceType) {
     if (keyType == '{}' && !Object.keys(data).length) { return null }
     return data
   } catch (error) {
-    console.error('[ATTEMPTING_TO_LOAD_STATE]', { key, instanceType })
+    logger.error('[ATTEMPTING_TO_LOAD_STATE]', { key, instanceType })
     Pop.error(error)
   }
 }

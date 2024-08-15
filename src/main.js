@@ -7,7 +7,6 @@ import { registerGlobalComponents } from './registerGlobalComponents'
 import './registerGlobalSocketHandlers'
 import { router } from './router'
 
-
 const root = createApp(App)
 async function init() {
   await registerGlobalComponents(root)

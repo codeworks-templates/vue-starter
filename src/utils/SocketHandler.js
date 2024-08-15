@@ -31,7 +31,7 @@ function registerGlobalSocketMessages(socket) {
 }
 
 function runPlayback() {
-  console.groupCollapsed('⚡[SOCKET_AUTHENTICATED]')
+  logger.groupCollapsed('⚡[SOCKET_AUTHENTICATED]')
   authenticated = true
   if (!queue.length) { return }
   const playback = [...queue]
@@ -40,7 +40,7 @@ function runPlayback() {
     logger.log(`📡 ${e.handler}`, e.action, e.payload)
     socket.emit(e.action, e.payload)
   })
-  console.groupEnd()
+  logger.groupEnd()
 }
 
 function onSocketError(error) {
@@ -61,7 +61,7 @@ export class SocketHandler {
 
   on(event, fn) {
     const ctx = this
-    this.socket?.on(event, function() {
+    this.socket?.on(event, () => {
       try {
         // @ts-ignore
         fn.call(ctx, ...arguments)
