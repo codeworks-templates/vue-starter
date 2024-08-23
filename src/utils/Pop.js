@@ -3,6 +3,46 @@ import 'sweetalert2/dist/sweetalert2.min.css'
 import { logger } from './Logger.js'
 import { AxiosError } from 'axios'
 
+/**
+   * @param {import('axios').AxiosError | Error | String } error An Error Object.
+   * @param { String } eventTrigger Queryable trigger
+   */
+function _error(error, eventTrigger = '') {
+  logger.error(eventTrigger, error)
+  /**
+   * @type {import('sweetalert2').SweetAlertOptions}
+   */
+  const config = {
+    title: 'Error!',
+    icon: "error",
+    iconColor: 'var(--bs-danger-text-emphasis)',
+    text: 'Uh-oh',
+    position: 'top-right',
+    timer: 1000 * 5,
+    toast: true,
+    showConfirmButton: false,
+    color: 'var(--bs-danger-text-emphasis)',
+    background: 'var(--bs-danger-bg-subtle)'
+  }
+
+
+  if (error instanceof AxiosError) {
+    const { response } = error
+    config.text = 'An error occurred'
+    if (response.data) {
+      config.text = typeof response.data == 'string' ? response.data : response.data.message
+    }
+    config.title += (' ' + response.status.toString())
+  } else if (error instanceof Error) {
+    config.text = error.message
+  } else {
+    config.text = error
+  }
+
+  return config
+
+}
+
 export default class Pop {
   /**
  *
@@ -23,7 +63,9 @@ export default class Pop {
         showCancelButton: true,
         reverseButtons: true,
         confirmButtonColor: 'var(--bs-primary)',
-        cancelButtonColor: 'var(--bs-secondary)'
+        cancelButtonColor: 'var(--bs-secondary)',
+        color: 'var(--bs-text)',
+        background: 'var(--bs-page)'
       })
       if (res.isConfirmed) {
         return true
@@ -47,14 +89,25 @@ export default class Pop {
  */
   static toast(title = 'Warning!', icon = 'warning', position = 'top-end', timer = 3000, progressBar = true) {
     Swal.fire({
-      title,
+      title: title || 'Warning!',
       icon,
       position,
       timer,
       timerProgressBar: progressBar,
       toast: true,
-      showConfirmButton: false
+      showConfirmButton: false,
+      color: 'var(--bs-text)',
+      background: 'var(--bs-page)'
     })
+  }
+
+
+
+  /**
+   * @param { string } message The message to display. If not provided, will display a generic message.
+   */
+  static success(message = 'Success!') {
+    this.toast(message, 'success')
   }
 
   /**
@@ -62,26 +115,27 @@ export default class Pop {
    * @param { String } eventTrigger Queryable trigger
    */
   static error(error, eventTrigger = '') {
-    logger.error(eventTrigger, error)
-
-    if (error instanceof AxiosError) {
-      const { response } = error
-      let message = 'An error occurred'
-      if (response) {
-        message = response.data.message || response.statusText
-      }
-      this.toast(message, 'error')
-    } else if (error instanceof Error) {
-      this.toast(error.message, 'error')
-    } else {
-      this.toast(error, 'error')
-    }
+    const config = _error(error, eventTrigger)
+    Swal.fire(config)
   }
 
   /**
-   * @param { string } message The message to display. If not provided, will display a generic message.
-   */
-  static success(message = 'Success!') {
-    this.toast(message, 'success')
+  * @param {import('axios').AxiosError | Error | String } error An Error Object.
+  * @param { String } eventTrigger Queryable trigger
+  */
+  static meow(error, eventTrigger = '') {
+    const config = _error(error, eventTrigger)
+
+    if (error instanceof AxiosError) {
+      const { response } = error
+      const statuscode = response.status.toString()
+      config.imageUrl = `https://http.cat/${statuscode}`
+      config.imageAlt = 'Picture of a bad cat'
+      config.footer = `<a href="https://http.cat/status/${statuscode}" target="_blank" style="color: #000">Meow!</a>`
+      config.position = 'center'
+      delete config.icon
+    }
+
+    Swal.fire(config)
   }
 }
