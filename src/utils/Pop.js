@@ -3,6 +3,13 @@ import 'sweetalert2/dist/sweetalert2.min.css'
 import { logger } from './Logger.js'
 import { AxiosError } from 'axios'
 
+const colorConfig = {
+  confirmButtonColor: 'var(--bs-primary)',
+  cancelButtonColor: 'var(--bs-secondary)',
+  background: 'var(--bs-tertiary-bg)',
+  color: 'var(--bs-body-color)'
+}
+
 /**
    * @param {import('axios').AxiosError | Error | String } error An Error Object.
    * @param { String } eventTrigger Queryable trigger
@@ -13,6 +20,7 @@ function _error(error, eventTrigger = '') {
    * @type {import('sweetalert2').SweetAlertOptions}
    */
   const config = {
+    ...colorConfig,
     title: 'Error!',
     icon: "error",
     iconColor: 'var(--bs-danger-text-emphasis)',
@@ -29,10 +37,10 @@ function _error(error, eventTrigger = '') {
   if (error instanceof AxiosError) {
     const { response } = error
     config.text = 'An error occurred'
-    if (response.data) {
-      config.text = typeof response.data == 'string' ? response.data : response.data.message
-    }
     config.title += (' ' + response.status.toString())
+    if (response.data) {
+      config.html = typeof response.data == 'string' ? response.data : response.data.message
+    }
   } else if (error instanceof Error) {
     config.text = error.message
   } else {
@@ -56,16 +64,13 @@ export default class Pop {
   static async confirm(title = 'Are you sure?', text = "You won't be able to revert this!", confirmButtonText = 'Yes', icon = 'warning') {
     try {
       const res = await Swal.fire({
+        ...colorConfig,
         title,
         text,
         icon,
         confirmButtonText,
         showCancelButton: true,
-        reverseButtons: true,
-        confirmButtonColor: 'var(--bs-primary)',
-        cancelButtonColor: 'var(--bs-secondary)',
-        color: 'var(--bs-text)',
-        background: 'var(--bs-page)'
+        reverseButtons: true
       })
       if (res.isConfirmed) {
         return true
@@ -89,6 +94,7 @@ export default class Pop {
  */
   static toast(title = 'Warning!', icon = 'warning', position = 'top-end', timer = 3000, progressBar = true) {
     Swal.fire({
+      ...colorConfig,
       title: title || 'Warning!',
       icon,
       position,
@@ -96,8 +102,6 @@ export default class Pop {
       timerProgressBar: progressBar,
       toast: true,
       showConfirmButton: false,
-      color: 'var(--bs-text)',
-      background: 'var(--bs-page)'
     })
   }
 
@@ -138,4 +142,5 @@ export default class Pop {
 
     Swal.fire(config)
   }
+
 }
