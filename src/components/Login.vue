@@ -1,7 +1,7 @@
 <script setup>
 import { computed } from 'vue';
-import { AppState } from '../AppState';
-import { AuthService } from '../services/AuthService';
+import { AppState } from '../AppState.js';
+import { AuthService } from '../services/AuthService.js';
 
 const identity = computed(() => AppState.identity)
 const account = computed(() => AppState.account)
