@@ -1,9 +1,9 @@
 import { AUTH_EVENTS, initialize } from '@bcwdev/auth0provider-client'
-import { AppState } from '../AppState'
-import { audience, clientId, domain } from '../env'
-import { accountService } from './AccountService'
-import { api } from './AxiosService'
-import { socketService } from './SocketService'
+import { AppState } from '../AppState.js'
+import { audience, clientId, domain } from '../env.js'
+import { accountService } from './AccountService.js'
+import { api } from './AxiosService.js'
+import { socketService } from './SocketService.js'
 
 
 export const AuthService = initialize({
