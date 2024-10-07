@@ -3,9 +3,9 @@ import 'bootstrap'
 import { createApp } from 'vue'
 // @ts-ignore
 import App from './App.vue'
-import { registerGlobalComponents } from './registerGlobalComponents'
-import './registerGlobalSocketHandlers'
-import { router } from './router'
+import { registerGlobalComponents } from './registerGlobalComponents.js'
+import './registerGlobalSocketHandlers.js'
+import { router } from './router.js'
 
 const root = createApp(App)
 async function init() {
