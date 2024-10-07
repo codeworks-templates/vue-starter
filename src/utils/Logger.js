@@ -1,4 +1,4 @@
-import { dev } from '../env'
+import { dev } from '../env.js'
 
 function log(type, content) {
   if (dev) {
