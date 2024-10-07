@@ -1,7 +1,7 @@
-import { AppState } from '../AppState'
+import { AppState } from '../AppState.js'
 import { Account } from '../models/Account.js'
-import { logger } from '../utils/Logger'
-import { api } from './AxiosService'
+import { logger } from '../utils/Logger.js'
+import { api } from './AxiosService.js'
 
 class AccountService {
   async getAccount() {
