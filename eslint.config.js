@@ -12,10 +12,6 @@ export default [
       "no-unused-vars": 1,
       "no-console": "warn",
       "no-debugger": "warn",
-      "space-before-function-paren": [
-        1,
-        "never"
-      ],
       "vue/html-self-closing": 0,
       "vue/multi-word-component-names": "off"
     }
