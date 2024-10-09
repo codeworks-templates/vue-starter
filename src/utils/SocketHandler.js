@@ -59,12 +59,11 @@ export class SocketHandler {
     this.requiresAuth = requiresAuth
   }
 
-  on(event, fn) {
+   on(event, fn) {
     const ctx = this
-    this.socket?.on(event, () => {
+    this.socket?.on(event, (...args) => {
       try {
-        // @ts-ignore
-        fn.call(ctx, ...arguments)
+        fn.call(ctx, ...args)
       } catch (error) {
         logger.warn('🩻[FATAL EVENT]', event)
         logger.error('💀[FATAL ERROR IN HANDLER METHOD]', error)
