@@ -33,7 +33,10 @@ function registerGlobalSocketMessages(socket) {
 function runPlayback() {
   logger.groupCollapsed('⚡[SOCKET_AUTHENTICATED]')
   authenticated = true
-  if (!queue.length) { return }
+  if (!queue.length) {
+    logger.groupEnd() 
+    return 
+  }
   const playback = [...queue]
   queue = []
   playback.forEach(e => {
