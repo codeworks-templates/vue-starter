@@ -1,55 +1,58 @@
 <script setup>
-import { onMounted, ref } from 'vue';
+import { onMounted, ref, watch } from 'vue';
 import { loadState, saveState } from '../utils/Store.js';
 import Login from './Login.vue';
 
 const theme = ref(loadState('theme') || 'light')
 
-onMounted(() => {
-  document.documentElement.setAttribute('data-bs-theme', theme.value)
-})
-
 function toggleTheme() {
   theme.value = theme.value == 'light' ? 'dark' : 'light'
+}
+
+watch(theme,()=> {
   document.documentElement.setAttribute('data-bs-theme', theme.value)
   saveState('theme', theme.value)
-}
+}, {immediate: true})
 
 </script>
 
 <template>
-  <nav class="navbar navbar-expand-sm navbar-dark bg-dark px-3">
-    <router-link class="navbar-brand d-flex" :to="{ name: 'Home' }">
-      <div class="d-flex flex-column align-items-center">
-        <img alt="logo" src="/img/cw-logo.png" height="45" />
+  <nav class="navbar navbar-expand-md bg-codeworks border-bottom border-vue">
+    <div class="container gap-2">
+      <router-link :to="{ name: 'Home' }" class="d-flex align-items-center text-light">
+        <img class="navbar-brand" alt="logo" src="/img/cw-logo.png" height="45" />
+        <b class="fs-5">Vue Starter</b>
+      </router-link>
+      <!-- collapse button -->
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar-links"
+        aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="mdi mdi-menu text-light"></span>
+      </button>
+      <!-- collapsing menu -->
+      <div class="collapse navbar-collapse " id="navbar-links">
+        <ul class="navbar-nav">
+          <li>
+            <router-link :to="{ name: 'About' }" class="btn text-green selectable">
+              About
+            </router-link>
+          </li>
+        </ul>
+        <!-- LOGIN COMPONENT HERE -->
+         <div class="ms-auto">
+           <button class="btn text-light" @click="toggleTheme"
+           :title="`Enable ${theme == 'light' ? 'dark' : 'light'} theme.`">
+           <i v-if="theme == 'dark'" class="mdi mdi-weather-sunny"></i>
+           <i v-if="theme == 'light'" class="mdi mdi-weather-night"></i>
+          </button>
+        </div>
+        <Login />
       </div>
-    </router-link>
-    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarText"
-      aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
-      <span class="navbar-toggler-icon"></span>
-    </button>
-    <div class="collapse navbar-collapse" id="navbarText">
-      <ul class="navbar-nav me-auto">
-        <li>
-          <router-link :to="{ name: 'About' }" class="btn text-success lighten-30 selectable text-uppercase">
-            About
-          </router-link>
-        </li>
-      </ul>
-      <!-- LOGIN COMPONENT HERE -->
-      <div>
-        <button class="btn text-light" @click="toggleTheme"
-          :title="`Enable ${theme == 'light' ? 'dark' : 'light'} theme.`">
-          <Icon :name="theme == 'light' ? 'weather-sunny' : 'weather-night'" />
-        </button>
-      </div>
-      <Login />
     </div>
   </nav>
 </template>
 
-<style scoped>
-a:hover {
+<style lang="scss" scoped>
+a {
   text-decoration: none;
 }
 
@@ -61,11 +64,5 @@ a:hover {
   border-bottom: 2px solid var(--bs-success);
   border-bottom-left-radius: 0;
   border-bottom-right-radius: 0;
-}
-
-@media screen and (min-width: 576px) {
-  nav {
-    height: 64px;
-  }
 }
 </style>

@@ -1,7 +1,7 @@
 import { logger } from "@/utils/Logger.js";
 import { SocketHandler } from "../utils/SocketHandler.js";
 
-class TestHandler extends SocketHandler {
+class RoomHandler extends SocketHandler {
 
   constructor() {
     super(true)

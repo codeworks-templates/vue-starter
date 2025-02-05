@@ -1,5 +1,5 @@
 import { logger } from "./Logger.js"
-import Pop from "./Pop.js"
+import { Pop } from "./Pop.js"
 
 const APP_NAME = "{{name}}"
 

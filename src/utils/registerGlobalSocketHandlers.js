@@ -1,4 +1,4 @@
-import { logger } from "./utils/Logger.js"
+import { logger } from "./Logger.js"
 
 async function registerSocketHandlers() {
   // @ts-ignore

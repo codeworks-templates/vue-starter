@@ -1,4 +1,4 @@
-import Pop from '../utils/Pop.js'
+import { Pop } from '../utils/Pop.js'
 import { SocketHandler } from '../utils/SocketHandler.js'
 
 class SocketService extends SocketHandler {
