@@ -13,7 +13,6 @@ export class Account {
     this.email = data.email
     this.name = data.name
     this.picture = data.picture
-    this.butt = data.butt
     // TODO add additional properties if needed
   }
 }

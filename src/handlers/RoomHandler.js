@@ -28,4 +28,4 @@ class RoomHandler extends SocketHandler {
 
 }
 
-export const testHandler = new TestHandler()
+export const roomHandler = new RoomHandler()

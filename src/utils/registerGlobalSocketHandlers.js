@@ -2,13 +2,13 @@ import { logger } from "./Logger.js"
 
 async function registerSocketHandlers() {
   // @ts-ignore
-  let handlers = import.meta.glob('./handlers/**/*.js')
+  let handlers = import.meta.glob('../handlers/**/*.js')
   for (const fileName in handlers) {
     const handlerName = fileName
       .substring(fileName.lastIndexOf('/') + 1)
       .replace(/\.\w+$/, '')
 
-    const handler = await import(`./handlers/${handlerName}.js`)
+    const handler = await import(`../handlers/${handlerName}.js`)
     handlers[handlerName] = handler
   }
 
