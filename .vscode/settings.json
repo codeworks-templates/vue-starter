@@ -19,7 +19,7 @@
   "eslint.format.enable": true,
   "workbench.colorCustomizations": {
     "commandCenter.border": "#15202b99",
-    "sash.hoverBorder": "#42d392",
+    "sash.hoverBorder": "#6bddaa",
     "statusBar.background": "#42d392",
     "statusBar.debuggingBackground": "#d34283",
     "statusBar.debuggingForeground": "#e7e7e7",
@@ -31,9 +31,22 @@
     "titleBar.activeForeground": "#15202b",
     "titleBar.inactiveBackground": "#42d39299",
     "titleBar.inactiveForeground": "#15202b99",
-    "editorGroup.border": "#42d392",
-    "sideBar.border": "#42d392",
-    "tab.activeBorder": "#42d392"
+    "activityBar.activeBackground": "#6bddaa",
+    "activityBar.background": "#6bddaa",
+    "activityBar.foreground": "#15202b",
+    "activityBar.inactiveForeground": "#15202b99",
+    "activityBarBadge.background": "#a663db",
+    "activityBarBadge.foreground": "#15202b"
   },
   "peacock.color": "#42d392",
+  "[vue]": {
+    "editor.defaultFormatter": "Vue.volar"
+  },
+  "github.copilot.editor.enableAutoCompletions": false,
+  "github.copilot.enable": {
+    "*": false,
+    "plaintext": false,
+    "markdown": false,
+    "scminput": false
+  }
 }

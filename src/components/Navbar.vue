@@ -1,5 +1,5 @@
 <script setup>
-import { onMounted, ref, watch } from 'vue';
+import { ref, watch } from 'vue';
 import { loadState, saveState } from '../utils/Store.js';
 import Login from './Login.vue';
 
@@ -9,20 +9,20 @@ function toggleTheme() {
   theme.value = theme.value == 'light' ? 'dark' : 'light'
 }
 
-watch(theme,()=> {
+watch(theme, () => {
   document.documentElement.setAttribute('data-bs-theme', theme.value)
   saveState('theme', theme.value)
-}, {immediate: true})
+}, { immediate: true })
 
 </script>
 
 <template>
   <nav class="navbar navbar-expand-md bg-codeworks border-bottom border-vue">
     <div class="container gap-2">
-      <router-link :to="{ name: 'Home' }" class="d-flex align-items-center text-light">
+      <RouterLink :to="{ name: 'Home' }" class="d-flex align-items-center text-light">
         <img class="navbar-brand" alt="logo" src="/img/cw-logo.png" height="45" />
         <b class="fs-5">Vue Starter</b>
-      </router-link>
+      </RouterLink>
       <!-- collapse button -->
       <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar-links"
         aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
@@ -32,17 +32,17 @@ watch(theme,()=> {
       <div class="collapse navbar-collapse " id="navbar-links">
         <ul class="navbar-nav">
           <li>
-            <router-link :to="{ name: 'About' }" class="btn text-green selectable">
+            <RouterLink :to="{ name: 'About' }" class="btn text-green selectable">
               About
-            </router-link>
+            </RouterLink>
           </li>
         </ul>
         <!-- LOGIN COMPONENT HERE -->
-         <div class="ms-auto">
-           <button class="btn text-light" @click="toggleTheme"
-           :title="`Enable ${theme == 'light' ? 'dark' : 'light'} theme.`">
-           <i v-if="theme == 'dark'" class="mdi mdi-weather-sunny"></i>
-           <i v-if="theme == 'light'" class="mdi mdi-weather-night"></i>
+        <div class="ms-auto">
+          <button class="btn text-light" @click="toggleTheme"
+            :title="`Enable ${theme == 'light' ? 'dark' : 'light'} theme.`">
+            <i v-if="theme == 'dark'" class="mdi mdi-weather-sunny"></i>
+            <i v-if="theme == 'light'" class="mdi mdi-weather-night"></i>
           </button>
         </div>
         <Login />
