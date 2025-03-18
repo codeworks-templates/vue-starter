@@ -14,7 +14,7 @@
     },
     "jsx": "preserve",
     "allowJs": true,
-    "checkJs": false,
+    "checkJs": true,
   },
   "exclude": [
     "node_modules",
