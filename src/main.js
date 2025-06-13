@@ -1,6 +1,6 @@
 import '@mdi/font/css/materialdesignicons.css'
 import '@/assets/scss/style.scss'
-import 'bootstrap/dist/js/bootstrap.bundle.js'
+import 'bootstrap'
 import { createApp } from 'vue'
 // @ts-ignore
 import App from './App.vue'
